@@ -2,9 +2,10 @@ const Sequelize = require('sequelize');
 const config = require('./index');
 
 const { db: dbDetails} = config;
+const { env } = config;
 
-const sequelize = new Sequelize(dbDetails.database, dbDetails.username, dbDetails.password, {
-    host: dbDetails.host,
+const sequelize = new Sequelize(dbDetails[env].database, dbDetails[env].username, dbDetails[env].password, {
+    host: dbDetails[env].host,
     dialect: 'mysql',
     pool: {
         max: 5,
@@ -17,10 +18,10 @@ const sequelize = new Sequelize(dbDetails.database, dbDetails.username, dbDetail
 sequelize
     .authenticate()
     .then(() => {
-        debug('Connection has been established successfully.');
+        console.log('Connection has been established successfully.');
     })
     .catch((err) => {
-        debug('Unable to connect to the database:', err);
+        console.log('Unable to connect to the database:', err);
     });
 
 module.exports = { sequelize };
